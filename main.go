@@ -8,6 +8,10 @@ import (
 	"gobot.io/x/gobot/platforms/keyboard"
 )
 
+const (
+	CommonSpeed = 20 // speed in percent
+)
+
 var drone = tello.NewDriver("8888")
 
 // TODO: consume events from the drone driver
@@ -36,16 +40,16 @@ func handleKeyEvent(k keyboard.KeyEvent) {
 	switch k.Key {
 	case keyboard.ArrowUp:
 		fmt.Println("FORWARD")
-		drone.Forward(20)
+		drone.Forward(CommonSpeed)
 	case keyboard.ArrowDown:
 		fmt.Println("BACK")
-		drone.Backward(20)
+		drone.Backward(CommonSpeed)
 	case keyboard.ArrowLeft:
 		fmt.Println("LEFT")
-		drone.Left(20)
+		drone.Left(CommonSpeed)
 	case keyboard.ArrowRight:
 		fmt.Println("RIGHT")
-		drone.Right(20)
+		drone.Right(CommonSpeed)
 	case keyboard.X:
 		fmt.Println("LAND")
 		drone.Land()
@@ -55,10 +59,19 @@ func handleKeyEvent(k keyboard.KeyEvent) {
 	case keyboard.W:
 		fmt.Println("UP")
 	case keyboard.A:
-		fmt.Println("rotate CLOCKWISE")
+		fmt.Println("CLOCKWISE ROTATION")
+		drone.Clockwise(CommonSpeed)
 	case keyboard.D:
-		fmt.Println("rotate COUNTERCLOCKWISE")
+		fmt.Println("COUNTERCLOCKWISE ROTATION")
+		drone.CounterClockwise(CommonSpeed)
+	case keyboard.R:
+		fmt.Println("CEASE ROTATION")
+		drone.CeaseRotation()
+	case keyboard.Spacebar:
+		drone.Hover()
+		fmt.Println("HOVERING")
+
 	default:
-		fmt.Printf("(%v)\n", k.Char)
+		fmt.Printf("%d - (%v)\n", k.Key, k.Char)
 	}
 }
